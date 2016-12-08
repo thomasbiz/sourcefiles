@@ -1,24 +1,26 @@
+/*jshint esversion: 6*/
 var fs = require('fs');
 var path = require('path');
 var MongoClient = require('mongodb').MongoClient;
 var url = 'mongodb://localhost:27017/sourcefiles';
 
-var dir = 'c:\\temp\\';
+var dir = 'c:\\temp\\testdir';
+var MAX_DEPTH = 5;
 
 myReadDir(dir, function(err, files) {
 	if (err) throw err;
 	MongoClient.connect(url, function(err, db) {
 		if (err) throw err;
-		db.collection('files').remove({}, function(err, result) {
+		db.collection('files').drop(function(err, result) {
 			db.collection('files').insertMany(files, function(err, result) {
 				if (err) throw err;
 				db.close();
 			});
 		});
 	});
-});
+}, 0);
 
-function myReadDir(dir, cb) {
+function myReadDir(dir, cb, depth) {
 	var list = [];
 
 	fs.readdir(dir, function(err, files) {
@@ -40,15 +42,21 @@ function myReadDir(dir, cb) {
 				if (err) return cb(err, null);
 
 				if (stats.isDirectory()) {
-					myReadDir(filePath, function(err, res) {
-						if (err) return cb(err, null);
-						list = list.concat(res);
-						list.push({name: file, path: dir, isDir: true});
+					if (depth == MAX_DEPTH) {
 						pending--;
-						if (pending === 0) {
+						if (pending === 0)
 							return cb(null, list);
-						}
-					});
+					} else {
+						myReadDir(filePath, function(err, res) {
+							if (err) return cb(err, null);
+							list = list.concat(res);
+							list.push({name: file, path: dir, isDir: true});
+							pending--;
+							if (pending === 0) {
+								return cb(null, list);
+							}
+						}, depth+1);
+					}
 				} else { 
 					list.push({name: file, path: dir, isDir: false});
 					pending--;

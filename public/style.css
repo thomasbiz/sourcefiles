@@ -1,14 +1,96 @@
+body {
+	margin: 0;
+	color: white;
+	font-family: Arial;
+}
+
 #app {
-	width: 60%;
-	margin: 0 auto;
+	background: #2A2E37;
+	padding: 0;
+	margin: 0;
 }
 
 #app input {
-	border: none;
+	border: 1px solid black;
 	width: 200px;
 	font-size: 20pt;
-	margin-top: 20px;
-	margin-bottom: 20px;
+	margin: 0px auto;
+	padding: 5px;
+	transition: width 0.2s;
+}
+
+.header-image {
+	max-width: 100px;
+	position: absolute;
+	right: 0;
+}
+
+#searchBox {
+	/*width: 800px;*/
+	margin: 0px auto;	
+	height: 10%;
+	position: relative;
+	background: #242628;
+	padding-left: 20px;
+}
+
+#searchBox h3 {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.currentFolder {
+	clear: both;	
+	font-size: 12pt !important;
+	background: #242628;
+	border: 0px !important;
+	color: white;
+	width: 90% !important;
+}
+.currentFolder:focus {
+	outline:none !important;
+}
+
+#searchBox input {
+	float: left;
+}
+
+#searchBox input:focus {
+	width: 250px;
+}
+
+#searchBox .results {
+	padding-left: 10px;
+	width: 240px;
+	display: none;
+	position: absolute;
+	bottom: -110px;
+	background: #242628;
+}
+
+#searchBox a {
+	text-decoration: none;
+	color: white;
+	font-size: 20pt;
+}
+
+#searchBox input:focus + .results { 
+	display: block;
+}
+
+.results {
+	
+}
+
+.container {
+	width: 100%;
+	height: 90%;
+}
+
+.file-pane {
+	float: left;
+	width: 50%;
+	height: 100%;
+	overflow-y: scroll;
 }
 
 #app ul {
@@ -35,6 +117,7 @@
 }
 
 .material-icons {
+	color: #00FEDE;
 	vertical-align: middle !important;
 	padding-bottom: 3px;
 }
@@ -43,12 +126,13 @@
 .spinner {
   width: 50px;
   text-align: center;
+  float: left;
 }
 
 .spinner > div {
   width: 10px;
   height: 10px;
-  background-color: #333;
+  background-color: #00FEDE;
 
   border-radius: 100%;
   display: inline-block;

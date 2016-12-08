@@ -1,6 +1,7 @@
 <html>
 <head>
 	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
 	<title>Sourcefiles</title>
 	<link rel="stylesheet" href="style.css" type="text/css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -8,15 +9,34 @@
 </head>
 <body>
 	<div id="app">
-	 	<input v-model="searchQuery" placeholder="search"></input>
-		<div v-if="loading" class="spinner">
-			<div class="bounce1"></div>
-			<div class="bounce2"></div>
-			<div class="bounce3"></div>
+		<div id="searchBox">
+			<img src="floppy.png" class="header-image" />
+			<h3>Source files</h3>
+			<input v-model="searchQuery" placeholder="search" />
+			<ul class="results">
+				<li v-for="res in results">
+					<a href="#" @mousedown="onClickResult">{{res.query}}</a>
+				</li>
+			</ul>
+			<div v-if="loading" class="spinner">
+				<div class="bounce1"></div>
+				<div class="bounce2"></div>
+				<div class="bounce3"></div>
+			</div>
+			<input class="currentFolder" :value="currentFolder" @click.prevent="copyFolder" />
 		</div>
-		<ul>
-			<file v-for="file in files" v-bind:file="file"></file>
-		</ul>
+		<div class="container">
+			<div class="file-pane">
+				<table>
+					<tr is="file" file v-for="file in folders" :file="file" v-on:clicked="onFolderSelected"></tr>
+				</table>
+			</div>
+			<div class="file-pane">
+				<table>
+					<tr is="file" file v-for="file in files" :file="file"></tr>
+				</table>
+			</div>
+		</div>
 	</div>
 
 	<script src="https://unpkg.com/vue/dist/vue.js"></script>
